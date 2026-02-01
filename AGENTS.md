@@ -12,6 +12,78 @@
 - **SSL**: Certificado comercial SSL2BUY válido hasta julio 2026
 - **Repositorio**: https://github.com/keuch2/petersen
 
+### ⚠️ Arquitectura de Red Privada (VPN)
+
+**IMPORTANTE**: El servidor está dentro de una **red privada VPN** con restricciones específicas de conectividad.
+
+#### Características de la Red
+
+**Conexiones que FUNCIONAN:**
+- ✅ **SSH desde máquinas en la VPN** → Servidor (puerto 2250)
+- ✅ **Acceso web público** → https://petersen.com.py (usuarios finales)
+- ✅ **Máquinas en VPN** → GitHub (para push/pull)
+
+**Conexiones que NO FUNCIONAN:**
+- ❌ **Servidor** → GitHub (timeout SSL en puerto 443)
+- ❌ **Servidor** → Internet HTTPS saliente (bloqueado por firewall)
+- ❌ **Acceso web desde fuera de la VPN** → Servidor (solo para desarrollo)
+
+#### Implicaciones Técnicas
+
+1. **Git en el Servidor**:
+   - El servidor **NO puede** hacer `git clone` o `git pull` desde GitHub directamente
+   - Todos los timeouts SSL al intentar conectar a GitHub son **normales y esperados**
+   - Por eso usamos el sistema de "puente" con rsync
+
+2. **Certificados SSL**:
+   - **No se puede usar Let's Encrypt** con validación HTTP (el servidor no es accesible desde internet para validación)
+   - Por eso usamos un **certificado comercial SSL2BUY** que se renueva manualmente
+   - La validación de Let's Encrypt fallaría con "Connection timeout" desde sus servidores
+
+3. **Despliegue**:
+   - El sistema de despliegue usa **SSH + rsync** en lugar de git pull
+   - La máquina local actúa como **puente** entre GitHub y el servidor
+   - Este es el **único método viable** dada la arquitectura de red
+
+4. **Acceso al Sitio**:
+   - Los **usuarios finales** acceden normalmente a https://petersen.com.py
+   - Las **máquinas de desarrollo** dentro de la VPN acceden vía SSH
+   - Intentar `curl https://petersen.com.py` desde fuera de la VPN puede dar timeout (esto es normal)
+
+#### Diagrama de Conectividad
+
+```
+Internet (Usuarios Finales)
+    ↓ HTTPS ✅
+petersen.com.py (Accesible públicamente)
+    ↓
+[Firewall/VPN]
+    ↓
+Servidor (181.40.91.194)
+    ↑ SSH ✅ (puerto 2250)
+    ↓ HTTPS ❌ (bloqueado a GitHub)
+    |
+Máquina Local (Desarrollo, dentro VPN)
+    ↑↓ HTTPS ✅
+GitHub (keuch2/petersen)
+```
+
+#### Por Qué el Sistema "Puente" es Necesario
+
+Dado que el servidor no puede conectarse a GitHub directamente:
+- **No podemos** usar `git pull` en el servidor
+- **No podemos** usar webhooks de GitHub
+- **No podemos** usar Let's Encrypt con validación HTTP
+- **SÍ podemos** usar SSH desde máquinas en la VPN
+- **SÍ podemos** sincronizar archivos con rsync
+
+Por eso implementamos el sistema donde:
+1. La máquina local se conecta a GitHub (✅ funciona)
+2. La máquina local se conecta al servidor vía SSH (✅ funciona)
+3. La máquina local actúa como puente sincronizando código
+
+**Esta arquitectura es permanente y no es un bug - es el diseño de la red.**
+
 ## Estructura del Sitio
 
 ### Tecnologías
