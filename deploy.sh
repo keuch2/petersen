@@ -38,13 +38,21 @@ git push origin main
 
 # Crear backup en el servidor
 echo -e "${YELLOW}💾 Creando backup en el servidor...${NC}"
-ssh -p $PORT $SERVER "cd $REMOTE_DIR && tar -czf ../backup-\$(date +%Y%m%d-%H%M%S).tar.gz ."
+ssh -p $PORT $SERVER "cd $REMOTE_DIR && tar -czf ../backup-\$(date +%Y%m%d-%H%M%S).tar.gz ." || true
 
-# Subir archivos al servidor usando rsync
+# Inicializar Git en el servidor si no existe
+echo -e "${YELLOW}🔧 Configurando Git en el servidor...${NC}"
+ssh -p $PORT $SERVER "cd $REMOTE_DIR && \
+    if [ ! -d .git ]; then \
+        git init && \
+        git config user.email 'deploy@petersen.com.py' && \
+        git config user.name 'Petersen Deploy' && \
+        git branch -m main; \
+    fi" || echo "Git ya está configurado"
+
+# Subir archivos al servidor usando rsync (incluyendo .git)
 echo -e "${YELLOW}📦 Sincronizando archivos con el servidor...${NC}"
 rsync -avz --delete \
-    --exclude='.git' \
-    --exclude='.gitignore' \
     --exclude='node_modules' \
     --exclude='.DS_Store' \
     --exclude='*.log' \
@@ -55,6 +63,13 @@ rsync -avz --delete \
     --exclude='www_petersen_com_py18-06-2025/' \
     -e "ssh -p $PORT" \
     $LOCAL_DIR/ $SERVER:$REMOTE_DIR/
+
+# Commitear cambios en el servidor
+echo -e "${YELLOW}📝 Commiteando cambios en el servidor...${NC}"
+COMMIT_MSG="Deploy: $(git log -1 --pretty=format:'%h - %s')"
+ssh -p $PORT $SERVER "cd $REMOTE_DIR && \
+    git add -A && \
+    (git diff-index --quiet HEAD || git commit -m '$COMMIT_MSG')" || echo "Sin cambios para commitear"
 
 # Ajustar permisos
 echo -e "${YELLOW}🔐 Ajustando permisos...${NC}"
