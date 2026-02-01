@@ -1,7 +1,7 @@
 # Petersen - URLs Amigables
 # Habilitar el motor de reescritura
 RewriteEngine On
-RewriteBase /petersen/
+RewriteBase /
 
 # Redirigir www a no-www (opcional, descomentar si se desea)
 # RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
