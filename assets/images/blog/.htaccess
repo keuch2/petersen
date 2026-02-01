@@ -1,0 +1,15 @@
+# Deshabilitar ejecución de PHP
+php_flag engine off
+
+# Bloquear archivos ejecutables
+<FilesMatch "\.(php|phtml|pl|py|jsp|asp|sh|cgi)$">
+    Require all denied
+</FilesMatch>
+
+# Deshabilitar listado
+Options -Indexes
+
+# Solo imágenes
+<FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|bmp|ico)$">
+    Require all granted
+</FilesMatch>

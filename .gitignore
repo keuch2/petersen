@@ -1,0 +1,70 @@
+# Sistema operativo
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDEs y editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos temporales
+tmp/
+temp/
+*.tmp
+*.bak
+*.cache
+
+# Uploads y archivos de usuario (si existen)
+uploads/*
+!uploads/.gitkeep
+
+# Archivos de configuración sensibles
+config.local.php
+.env
+.env.local
+.env.production.local
+
+# Certificados SSL (ya están en el servidor)
+*.crt
+*.key
+*.pem
+*.p7b
+*.pfx
+www_petersen_com_py18-06-2025/
+
+# Archivos de caché PHP
+*.cache.php
+
+# Archivos de sesión PHP
+sessions/
+
+# Node modules (si se usan herramientas de build)
+node_modules/
+
+# Composer (si se usa)
+/vendor/
+
+# Archivos de backup
+*.backup
+*~
+
+# Archivos de sistema
+phpinfo.php

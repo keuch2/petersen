@@ -1,0 +1,34 @@
+# Proteger archivos de base de datos y logs
+<FilesMatch "\.(db|sqlite|sqlite3|log|txt|sql|bak|backup)$">
+    Require all denied
+</FilesMatch>
+
+# Proteger archivos de configuración en includes/
+# NOTA: Este patrón solo debe aplicarse a archivos en el directorio includes/
+# Las páginas del CMS (blog.php, media.php, site-options.php, etc.) NO deben bloquearse
+
+# Proteger directorios sensibles
+RedirectMatch 403 ^/petersen/cms/database/.*$
+RedirectMatch 403 ^/petersen/cms/logs/.*$
+RedirectMatch 403 ^/petersen/cms/includes/.*\.php$
+RedirectMatch 403 ^/petersen/cms/vendor/.*$
+
+# Deshabilitar ejecución de PHP en uploads
+RedirectMatch 403 ^/petersen/assets/media/.*\.php$
+RedirectMatch 403 ^/petersen/assets/images/blog/.*\.php$
+
+# Headers de seguridad
+<IfModule mod_headers.c>
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' cdn.quilljs.com; style-src 'self' 'unsafe-inline' cdn.quilljs.com fonts.googleapis.com; font-src 'self' fonts.gstatic.com; img-src 'self' data:; connect-src 'self';"
+</IfModule>
+
+# Configuración de seguridad
+ServerSignature Off
+Options -Indexes
+
+# Límites
+LimitRequestBody 52428800
