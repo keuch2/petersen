@@ -103,27 +103,27 @@ $recentPosts = array_slice($recentPosts, 0, 3); // Solo los 3 más recientes
                 </button>
                 
                 <div class="rubros-track">
-                    <a href="/petersen2025/division-metalurgica" class="rubro-card">
+                    <a href="/division-metalurgica" class="rubro-card">
                         <img src="assets/images/icons/metalurgica.png" alt="Metalúrgica">
                         <span>METALÚRGICA</span>
                     </a>
-                    <a href="/petersen2025/division-industrial" class="rubro-card">
+                    <a href="/division-industrial" class="rubro-card">
                         <img src="assets/images/icons/industrial.png" alt="Industria">
                         <span>INDUSTRIA</span>
                     </a>
-                    <a href="/petersen2025/division-ferreteria" class="rubro-card">
+                    <a href="/division-ferreteria" class="rubro-card">
                         <img src="assets/images/icons/ferreteria.png" alt="Ferretería">
                         <span>FERRETERÍA</span>
                     </a>
-                    <a href="/petersen2025/division-mecanica" class="rubro-card">
+                    <a href="/division-mecanica" class="rubro-card">
                         <img src="assets/images/icons/mecanica.png" alt="Mecánica">
                         <span>MECÁNICA</span>
                     </a>
-                    <a href="/petersen2025/division-bosque-y-jardin" class="rubro-card">
+                    <a href="/division-bosque-y-jardin" class="rubro-card">
                         <img src="assets/images/icons/forestal.png" alt="Bosque &amp; Jardín">
                         <span>BOSQUE &amp; JARDÍN</span>
                     </a>
-                    <a href="/petersen2025/division-construccion" class="rubro-card">
+                    <a href="/division-construccion" class="rubro-card">
                         <img src="assets/images/icons/construccion.png" alt="Construcción">
                         <span>CONSTRUCCIÓN</span>
                     </a>
