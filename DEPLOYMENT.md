@@ -28,7 +28,27 @@ git push origin feature/nombre-del-cambio
 
 ### 2. Despliegue a Producción
 
-#### Opción A: Despliegue Manual
+#### Opción A: Despliegue Automático con Script (Recomendado)
+```bash
+# Asegurarse de estar en la rama main
+git checkout main
+
+# Mergear cambios si es necesario
+git merge feature/nombre-del-cambio
+
+# Ejecutar el script de despliegue
+./deploy.sh
+```
+
+El script `deploy.sh` realiza automáticamente:
+- ✅ Verifica que no haya cambios sin commitear
+- ✅ Sube cambios a GitHub
+- ✅ Crea backup automático en el servidor
+- ✅ Sincroniza archivos con rsync
+- ✅ Ajusta permisos correctamente
+- ✅ Verifica que el sitio esté funcionando
+
+#### Opción B: Despliegue Manual
 ```bash
 # Asegurarse de estar en la rama stable
 git checkout stable
