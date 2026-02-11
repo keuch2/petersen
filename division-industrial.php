@@ -138,6 +138,12 @@ Security::setSecurityHeaders();
                 <div class="marca-logo">
                     <img src="assets/images/logos/rexnord.jpg" alt="Rexnord">
                 </div>
+                <div class="marca-logo">
+                    <img src="assets/images/logos/danfoss.jpg" alt="Danfoss">
+                </div>
+                <div class="marca-logo">
+                    <img src="assets/images/logos/metalplan.jpg" alt="Metalplan">
+                </div>
             </div>
         </div>
     </section>

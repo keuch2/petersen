@@ -125,6 +125,12 @@ Security::setSecurityHeaders();
                 <div class="aliado-card">
                     <img src="assets/images/logos/tyrolit.png" alt="Tyrolit">
                 </div>
+                <div class="aliado-card">
+                    <img src="assets/images/logos/danfoss.jpg" alt="Danfoss">
+                </div>
+                <div class="aliado-card">
+                    <img src="assets/images/logos/metalplan.jpg" alt="Metalplan">
+                </div>
             </div>
         </div>
     </section>

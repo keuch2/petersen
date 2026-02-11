@@ -132,6 +132,9 @@ Security::setSecurityHeaders();
                 <div class="marca-logo">
                     <img src="assets/images/logos/lince.jpg" alt="Lince">
                 </div>
+                <div class="marca-logo">
+                    <img src="assets/images/logos/fischer.jpg" alt="Fischer">
+                </div>
             </div>
         </div>
     </section>
