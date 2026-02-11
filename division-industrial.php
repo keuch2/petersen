@@ -33,7 +33,7 @@ Security::setSecurityHeaders();
         <div class="container">
             <div class="division-title-content">
                 <img src="assets/images/icons/industrial.png" alt="Industrial" class="division-icon">
-                <h1>Industrial</h1>
+                <h1>Industria</h1>
             </div>
         </div>
     </div>
@@ -115,31 +115,28 @@ Security::setSecurityHeaders();
             
             <div class="marcas-grid">
                 <div class="marca-logo">
+                    <img src="assets/images/logos/emax.png" alt="EMAX">
+                </div>
+                <div class="marca-logo">
                     <img src="assets/images/logos/spiraxsarco.png" alt="Spirax Sarco">
+                </div>
+                <div class="marca-logo">
+                    <img src="assets/images/logos/grundfos.jpg" alt="Grundfos">
                 </div>
                 <div class="marca-logo">
                     <img src="assets/images/logos/genebre.png" alt="Genebre">
                 </div>
                 <div class="marca-logo">
-                    <img src="assets/images/logos/emax.png" alt="EMAX">
+                    <img src="assets/images/logos/sullair.jpg" alt="Sullair">
                 </div>
                 <div class="marca-logo">
-                    <img src="assets/images/logos/starret.png" alt="Starrett">
+                    <img src="assets/images/logos/dunlop.jpg" alt="Dunlop">
                 </div>
                 <div class="marca-logo">
-                    <img src="assets/images/logos/esab.png" alt="ESAB">
+                    <img src="assets/images/logos/klinger.jpg" alt="Klinger">
                 </div>
                 <div class="marca-logo">
-                    <img src="assets/images/logos/sumig.png" alt="Sumig">
-                </div>
-                <div class="marca-logo">
-                    <img src="assets/images/logos/thor.png" alt="Thor">
-                </div>
-                <div class="marca-logo">
-                    <img src="assets/images/logos/conarco.png" alt="Conarco">
-                </div>
-                <div class="marca-logo">
-                    <img src="assets/images/logos/hyundai.png" alt="Hyundai">
+                    <img src="assets/images/logos/rexnord.jpg" alt="Rexnord">
                 </div>
             </div>
         </div>

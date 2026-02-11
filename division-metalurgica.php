@@ -145,7 +145,13 @@ Security::setSecurityHeaders();
             
             <div class="marcas-grid">
                 <div class="marca-logo">
+                    <img src="assets/images/logos/conarco.png" alt="Conarco">
+                </div>
+                <div class="marca-logo">
                     <img src="assets/images/logos/esab.png" alt="ESAB">
+                </div>
+                <div class="marca-logo">
+                    <img src="assets/images/logos/okesab.jpg" alt="OK ESAB">
                 </div>
                 <div class="marca-logo">
                     <img src="assets/images/logos/sumig.png" alt="Sumig">
@@ -154,10 +160,10 @@ Security::setSecurityHeaders();
                     <img src="assets/images/logos/thor.png" alt="Thor">
                 </div>
                 <div class="marca-logo">
-                    <img src="assets/images/logos/hyundai.png" alt="Hyundai">
+                    <img src="assets/images/logos/neo.png" alt="Neo">
                 </div>
                 <div class="marca-logo">
-                    <img src="assets/images/logos/conarco.png" alt="Conarco">
+                    <img src="assets/images/logos/starret.png" alt="Starrett">
                 </div>
             </div>
         </div>

@@ -112,16 +112,25 @@ Security::setSecurityHeaders();
             
             <div class="marcas-grid">
                 <div class="marca-logo">
-                    <img src="assets/images/logos/gladiator.png" alt="Gladiator">
-                </div>
-                <div class="marca-logo">
                     <img src="assets/images/logos/truper.png" alt="Truper">
                 </div>
                 <div class="marca-logo">
-                    <img src="assets/images/logos/gedore.png" alt="Gedore">
+                    <img src="assets/images/logos/gladiator.png" alt="Gladiator">
                 </div>
                 <div class="marca-logo">
-                    <img src="assets/images/logos/dewalt.png" alt="DeWalt">
+                    <img src="assets/images/logos/neo.png" alt="Neo">
+                </div>
+                <div class="marca-logo">
+                    <img src="assets/images/logos/ecef.png" alt="ECEF">
+                </div>
+                <div class="marca-logo">
+                    <img src="assets/images/logos/genebre.png" alt="Genebre">
+                </div>
+                <div class="marca-logo">
+                    <img src="assets/images/logos/termocril.jpg" alt="Termocril">
+                </div>
+                <div class="marca-logo">
+                    <img src="assets/images/logos/lince.jpg" alt="Lince">
                 </div>
             </div>
         </div>

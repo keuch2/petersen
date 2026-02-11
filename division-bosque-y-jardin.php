@@ -127,13 +127,16 @@ Security::setSecurityHeaders();
             
             <div class="marcas-grid">
                 <div class="marca-logo">
-                    <img src="assets/images/logos/oleomac.png" alt="Oleo-Mac">
-                </div>
-                <div class="marca-logo">
                     <img src="assets/images/logos/truper.png" alt="Truper">
                 </div>
                 <div class="marca-logo">
-                    <img src="assets/images/logos/forestgarden.png" alt="Pro Forest & Garden">
+                    <img src="assets/images/logos/forestgarden.png" alt="Forest & Garden">
+                </div>
+                <div class="marca-logo">
+                    <img src="assets/images/logos/gladiator.png" alt="Gladiator">
+                </div>
+                <div class="marca-logo">
+                    <img src="assets/images/logos/oleomac.png" alt="Oleo-Mac">
                 </div>
             </div>
         </div>

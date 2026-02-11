@@ -136,19 +136,25 @@ Security::setSecurityHeaders();
                     <img src="assets/images/logos/energy.png" alt="Energy">
                 </div>
                 <div class="marca-logo">
+                    <img src="assets/images/logos/forestgarden.png" alt="Forest & Garden">
+                </div>
+                <div class="marca-logo">
                     <img src="assets/images/logos/neo.png" alt="Neo">
-                </div>
-                <div class="marca-logo">
-                    <img src="assets/images/logos/driven.png" alt="Driven">
-                </div>
-                <div class="marca-logo">
-                    <img src="assets/images/logos/forestgarden.png" alt="Pro Forest & Garden">
                 </div>
                 <div class="marca-logo">
                     <img src="assets/images/logos/starret.png" alt="Starrett">
                 </div>
                 <div class="marca-logo">
                     <img src="assets/images/logos/chesy.png" alt="Chesy">
+                </div>
+                <div class="marca-logo">
+                    <img src="assets/images/logos/oleomac.png" alt="Oleo-Mac">
+                </div>
+                <div class="marca-logo">
+                    <img src="assets/images/logos/lince.jpg" alt="Lince">
+                </div>
+                <div class="marca-logo">
+                    <img src="assets/images/logos/genebre.png" alt="Genebre">
                 </div>
             </div>
         </div>
