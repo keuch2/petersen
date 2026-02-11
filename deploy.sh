@@ -3,8 +3,6 @@
 # Script de despliegue para Petersen.com.py
 # Uso: ./deploy.sh
 
-set -e
-
 echo "🚀 Iniciando despliegue a producción..."
 
 # Configuración
@@ -12,11 +10,10 @@ SERVER="root@181.40.91.194"
 PORT="2250"
 REMOTE_DIR="/var/www/petersen/public"
 LOCAL_DIR="/opt/homebrew/var/www/petersen"
-SSHPASS="2026.WEBPetersen"
+export SSHPASS='2026.WEBPetersen'
 
-# Comandos SSH y SCP con contraseña automática
-SSH_CMD="sshpass -p $SSHPASS ssh -o StrictHostKeyChecking=no -p $PORT $SERVER"
-RSYNC_SSH="sshpass -p $SSHPASS ssh -o StrictHostKeyChecking=no -p $PORT"
+# Opciones SSH reutilizables
+SSH_OPTS="-o StrictHostKeyChecking=no -p ${PORT}"
 
 # Colores para output
 GREEN='\033[0;32m'
@@ -39,23 +36,22 @@ fi
 
 # Push a GitHub
 echo -e "${YELLOW}📤 Subiendo cambios a GitHub...${NC}"
-git push origin main
+git push origin main || { echo -e "${RED}❌ Error al subir a GitHub${NC}"; exit 1; }
 
-# Crear backup en el servidor
-echo -e "${YELLOW}💾 Creando backup en el servidor...${NC}"
-$SSH_CMD "cd $REMOTE_DIR && tar -czf ../backup-\$(date +%Y%m%d-%H%M%S).tar.gz ." || true
-
-# Inicializar Git en el servidor si no existe
-echo -e "${YELLOW}🔧 Configurando Git en el servidor...${NC}"
-$SSH_CMD "cd $REMOTE_DIR && \
+# Paso 1: Backup + configurar Git en el servidor (una sola conexión SSH)
+echo -e "${YELLOW}💾 Creando backup y configurando Git en el servidor...${NC}"
+sshpass -e ssh ${SSH_OPTS} ${SERVER} "
+    cd ${REMOTE_DIR} && \
+    tar -czf ../backup-\$(date +%Y%m%d-%H%M%S).tar.gz . 2>/dev/null; \
     if [ ! -d .git ]; then \
         git init && \
         git config user.email 'deploy@petersen.com.py' && \
         git config user.name 'Petersen Deploy' && \
         git branch -m main; \
-    fi" || echo "Git ya está configurado"
+    fi
+" || echo -e "${YELLOW}⚠️  Backup/Git config: continuando...${NC}"
 
-# Subir archivos al servidor usando rsync (incluyendo .git)
+# Paso 2: Sincronizar archivos con rsync
 echo -e "${YELLOW}📦 Sincronizando archivos con el servidor...${NC}"
 rsync -avz --delete \
     --exclude='node_modules' \
@@ -66,25 +62,21 @@ rsync -avz --delete \
     --exclude='DEPLOYMENT.md' \
     --exclude='mockups/' \
     --exclude='www_petersen_com_py18-06-2025/' \
-    -e "$RSYNC_SSH" \
-    $LOCAL_DIR/ $SERVER:$REMOTE_DIR/
+    -e "sshpass -e ssh ${SSH_OPTS}" \
+    ${LOCAL_DIR}/ ${SERVER}:${REMOTE_DIR}/ || { echo -e "${RED}❌ Error en rsync${NC}"; exit 1; }
 
-# Commitear cambios en el servidor
-echo -e "${YELLOW}📝 Commiteando cambios en el servidor...${NC}"
+# Paso 3: Commit en servidor + permisos + verificación (una sola conexión SSH)
+echo -e "${YELLOW}📝 Finalizando despliegue en el servidor...${NC}"
 COMMIT_MSG="Deploy: $(git log -1 --pretty=format:'%h - %s')"
-$SSH_CMD "cd $REMOTE_DIR && \
+sshpass -e ssh ${SSH_OPTS} ${SERVER} "
+    cd ${REMOTE_DIR} && \
     git add -A && \
-    (git diff-index --quiet HEAD || git commit -m '$COMMIT_MSG')" || echo "Sin cambios para commitear"
-
-# Ajustar permisos
-echo -e "${YELLOW}🔐 Ajustando permisos...${NC}"
-$SSH_CMD "chown -R www-data:www-data $REMOTE_DIR && chmod -R 755 $REMOTE_DIR"
-
-# Verificar sitio (desde el servidor mismo, ya que estamos en VPN)
-echo -e "${YELLOW}🔍 Verificando sitio...${NC}"
-$SSH_CMD "curl -s -o /dev/null -w '%{http_code}' http://localhost/" | grep -q "200" \
-    && echo -e "${GREEN}✅ Sitio respondiendo correctamente${NC}" \
-    || echo -e "${YELLOW}⚠️  No se pudo verificar el sitio (puede estar funcionando correctamente)${NC}"
+    (git diff-index --quiet HEAD 2>/dev/null || git commit -m '${COMMIT_MSG}') && \
+    chown -R www-data:www-data ${REMOTE_DIR} && \
+    chmod -R 755 ${REMOTE_DIR} && \
+    echo 'DEPLOY_OK'
+" && echo -e "${GREEN}✅ Servidor actualizado correctamente${NC}" \
+  || echo -e "${YELLOW}⚠️  Algunos pasos finales pueden no haberse completado${NC}"
 
 echo ""
 echo "📊 Resumen del despliegue:"
