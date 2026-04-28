@@ -1,11 +1,17 @@
 <?php
 // Configuración del CMS
 define('DB_PATH', __DIR__ . '/../database/petersen_cms.db');
-define('SITE_URL', 'http://localhost/petersen');
+
+$_scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+$_host   = $_SERVER['HTTP_HOST'] ?? 'localhost';
+define('SITE_URL', $_scheme . '://' . $_host);
 define('CMS_URL', SITE_URL . '/cms');
+unset($_scheme, $_host);
 
 // Configuración de seguridad
-define('ENVIRONMENT', 'development'); // Cambiar a 'production' en producción
+$_is_production = (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] !== 'localhost');
+define('ENVIRONMENT', $_is_production ? 'production' : 'development');
+unset($_is_production);
 
 // Configuración de errores según entorno
 if (ENVIRONMENT === 'production') {
@@ -23,7 +29,7 @@ if (ENVIRONMENT === 'production') {
 ini_set('session.cookie_httponly', 1);
 ini_set('session.use_only_cookies', 1);
 ini_set('session.cookie_samesite', 'Strict');
-ini_set('session.cookie_secure', 0); // Cambiar a 1 en producción con HTTPS
+ini_set('session.cookie_secure', ENVIRONMENT === 'production' ? 1 : 0);
 ini_set('session.gc_maxlifetime', 3600); // 1 hora
 
 session_start();
