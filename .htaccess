@@ -1,7 +1,11 @@
 # Petersen - URLs Amigables
 # Habilitar el motor de reescritura
 RewriteEngine On
-RewriteBase /petersen/
+
+# Sin RewriteBase: las reglas son relativas al directorio del .htaccess, así
+# el mismo archivo funciona en producción (raíz del dominio) y en local
+# (subcarpeta /petersen). Un RewriteBase fijo rompía las URLs limpias en uno
+# de los dos entornos.
 
 # Redirigir www a no-www (opcional, descomentar si se desea)
 # RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
@@ -11,26 +15,32 @@ RewriteBase /petersen/
 # RewriteCond %{HTTPS} off
 # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# Redirigir URLs con .php a URLs sin extensión
+# Redirigir URLs con .php a URLs sin extensión.
 # Solo en GET: un 301 sobre un POST haría que el navegador reenvíe como GET
 # y se perderían los datos del formulario (handlers AJAX).
+# Se compara contra %{THE_REQUEST} (la línea de petición original del
+# navegador) y no contra %{REQUEST_URI}: este último ya refleja la reescritura
+# interna a .php, así que la regla volvía a dispararse sobre su propio
+# resultado y provocaba un bucle infinito de redirecciones.
 RewriteCond %{REQUEST_METHOD} ^GET$
-RewriteCond %{THE_REQUEST} \s/petersen/([^.]+)\.php [NC]
-RewriteRule ^ /petersen/%1 [R=301,L]
+RewriteCond %{THE_REQUEST} \s(/[^?\s]*)\.php[\s?] [NC]
+RewriteRule ^ %1 [R=301,L]
 
 # Redirigir URLs con .html a URLs sin extensión (para archivos HTML legacy)
-RewriteCond %{THE_REQUEST} \s/petersen/([^.]+)\.html [NC]
-RewriteRule ^ /petersen/%1 [R=301,L]
+RewriteCond %{REQUEST_METHOD} ^GET$
+RewriteCond %{THE_REQUEST} \s(/[^?\s]*)\.html[\s?] [NC]
+RewriteRule ^ %1 [R=301,L]
 
-# Evitar redirecciones en archivos reales (assets, imágenes, etc)
+# Reescribir URLs limpias a archivos PHP.
+# Las condiciones -f/-d evitan tocar archivos y directorios reales (assets).
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-
-# Reescribir URLs limpias a archivos PHP
 RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule ^(.*)$ $1.php [L]
 
 # Reescribir URLs limpias a archivos HTML (si existen en carpeta HTML)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.html -f
 RewriteRule ^(.*)$ $1.html [L]
 
