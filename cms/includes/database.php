@@ -122,6 +122,24 @@ class Database {
         
         // Crear índice para form_settings
         $this->db->exec("CREATE INDEX IF NOT EXISTS idx_form_type ON form_settings(form_type)");
+
+        // Crear tabla de registros de La Feria Petersen
+        $this->db->exec("
+            CREATE TABLE IF NOT EXISTS feria_leads (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nombre VARCHAR(255) NOT NULL,
+                telefono VARCHAR(20) UNIQUE NOT NULL,
+                email VARCHAR(255),
+                ciudad VARCHAR(100),
+                ip_address VARCHAR(45),
+                user_agent TEXT,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        ");
+
+        // Crear índices para feria_leads
+        $this->db->exec("CREATE INDEX IF NOT EXISTS idx_feria_telefono ON feria_leads(telefono)");
+        $this->db->exec("CREATE INDEX IF NOT EXISTS idx_feria_created ON feria_leads(created_at)");
         
         // Insertar configuraciones por defecto si no existen
         $stmt = $this->db->query("SELECT COUNT(*) as count FROM form_settings");

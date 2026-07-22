@@ -58,6 +58,7 @@ rsync -avz --delete \
     --exclude='.DS_Store' \
     --exclude='*.log' \
     --exclude='logs/' \
+    --exclude='cms/database/' \
     --exclude='deploy.sh' \
     --exclude='DEPLOYMENT.md' \
     --exclude='mockups/' \

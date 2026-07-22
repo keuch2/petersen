@@ -68,3 +68,10 @@ node_modules/
 
 # Archivos de sistema
 phpinfo.php
+
+# Base de datos del CMS: cada entorno tiene la suya.
+# La de producción contiene datos reales (mensajes, postulaciones, leads) y no
+# debe viajar en git ni sincronizarse por rsync. Las tablas se autocrean en
+# initDatabase() al primer acceso.
+cms/database/
+CREDENTIALS_ADMIN.txt

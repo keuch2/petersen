@@ -11,7 +11,7 @@ Security::setSecurityHeaders();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="División Industrial de Petersen - Soluciones para vapor, bombeo, automatización y sistemas de aire comprimido.">
     <title>Industrial | Petersen</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@ Security::setSecurityHeaders();
 <body>
 <?php include 'includes/header.php'; ?>
 
-<!-- Page Header -->
+    <!-- Page Header -->
     <div class="page-header">
         <div class="container">
             <h1>Rubros</h1>
@@ -38,21 +38,117 @@ Security::setSecurityHeaders();
         </div>
     </div>
 
-    <!-- Division Hero -->
-    <section class="division-hero" style="background-image: url('assets/images/hero-industrial.png');"></section>
+    <!-- Soluciones Section -->
+    <section class="soluciones-section">
+        <div class="container">
+            <div class="section-head">
+                <span class="section-eyebrow">División Industrial</span>
+                <h2 class="soluciones-title">Soluciones</h2>
+                <p class="section-sub">Cuatro campos de aplicación, respaldados por las marcas líderes del mundo.</p>
+            </div>
 
-    <!-- Division Content -->
-    <section class="division-content">
+            <div class="dominios-grid">
+                <?php
+                $dominios = [
+                    [
+                        'num'   => '01',
+                        'nombre'=> 'Vapor',
+                        'desc'  => 'Trampas, válvulas y control de vapor para máxima eficiencia térmica.',
+                        'marca' => 'Spirax Sarco',
+                        'img'   => 'industria2.jpg',
+                        'alt'   => 'Válvula de control de vapor con posicionador',
+                    ],
+                    [
+                        'num'   => '02',
+                        'nombre'=> 'Bombeo',
+                        'desc'  => 'Bombas centrífugas y sumergibles para procesos y servicios.',
+                        'marca' => 'Grundfos',
+                        'img'   => 'industria3.jpg',
+                        'alt'   => 'Sala de bombas y tuberías bajo inspección técnica',
+                    ],
+                    [
+                        'num'   => '03',
+                        'nombre'=> 'Transmisión mecánica',
+                        'desc'  => 'Reductores, acoples y componentes de potencia de larga vida.',
+                        'marca' => 'Rexnord',
+                        'img'   => 'industria1.jpg',
+                        'alt'   => 'Sierra de cinta industrial en operación de corte',
+                    ],
+                    [
+                        'num'   => '04',
+                        'nombre'=> 'Corte y procesamiento',
+                        'desc'  => 'Hojas y herramientas de corte para la industria frigorífica y de alimentos.',
+                        'marca' => 'Starrett',
+                        'img'   => 'industria4.jpg',
+                        'alt'   => 'Corte de precisión con hoja Starrett en frigorífico',
+                    ],
+                ];
+                foreach ($dominios as $d):
+                ?>
+                    <article class="dominio-card">
+                        <div class="dominio-media">
+                            <img src="assets/images/aplicaciones/<?php echo $d['img']; ?>" alt="<?php echo htmlspecialchars($d['alt']); ?>" loading="lazy">
+                            <span class="dominio-num"><?php echo $d['num']; ?></span>
+                        </div>
+                        <div class="dominio-body">
+                            <h3 class="dominio-nombre"><?php echo htmlspecialchars($d['nombre']); ?></h3>
+                            <p class="dominio-desc"><?php echo htmlspecialchars($d['desc']); ?></p>
+                            <span class="dominio-marca"><?php echo htmlspecialchars($d['marca']); ?></span>
+                        </div>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marcas Carousel -->
+    <section class="marcas-section marcas-carousel-section">
+        <div class="container">
+            <div class="section-head">
+                <span class="section-eyebrow">Representaciones oficiales</span>
+                <h2 class="marcas-title">Marcas</h2>
+                <p class="section-sub">Importación directa de líderes mundiales en tecnología industrial.</p>
+            </div>
+        </div>
+        <div class="marcas-marquee" aria-label="Carrusel de marcas">
+            <div class="marcas-marquee-track">
+                <?php
+                $marcas_industrial = [
+                    ['emax.png', 'EMAX'],
+                    ['spiraxsarco.png', 'Spirax Sarco'],
+                    ['grundfos.jpg', 'Grundfos'],
+                    ['genebre.png', 'Genebre'],
+                    ['sullair.jpg', 'Sullair'],
+                    ['dunlop.jpg', 'Dunlop'],
+                    ['klinger.jpg', 'Klinger'],
+                    ['rexnord.jpg', 'Rexnord'],
+                    ['danfoss.jpg', 'Danfoss'],
+                    ['metalplan.jpg', 'Metalplan'],
+                ];
+                // Duplicado para el loop infinito
+                foreach (array_merge($marcas_industrial, $marcas_industrial) as $marca):
+                ?>
+                    <div class="marca-logo">
+                        <img src="assets/images/logos/<?php echo $marca[0]; ?>" alt="<?php echo htmlspecialchars($marca[1]); ?>">
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacto Section -->
+    <section class="division-content division-contacto">
         <div class="container">
             <div class="division-grid">
                 <div class="division-info">
-                    <p>Somos importadores directos de marcas líderes a nivel mundial, ofreciendo soluciones para vapor, bombeo, automatización, transmisión mecánica y sistemas de aire comprimido.</p>
-                    <p>Atendemos industrias que buscan eficiencia energética, confiabilidad operativa y soporte técnico permanente.</p>
+                    <span class="section-eyebrow">Asesoría técnica</span>
+                    <h2 class="contacto-heading">Hablemos de su planta.</h2>
+                    <p>Importamos de forma directa las marcas líderes del mundo y acompañamos cada instalación con soporte técnico permanente: eficiencia energética, confiabilidad operativa y repuestos garantizados.</p>
                     <div class="dirigido">
                         <p><strong>Dirigido a:</strong> Industrias manufactureras, plantas de procesamiento, ingenios azucareros y empresas de servicios industriales.</p>
                     </div>
                 </div>
-                
+
                 <div class="contact-form">
                     <h3>Solicitar Asesoría</h3>
                     <form>
@@ -81,68 +177,6 @@ Security::setSecurityHeaders();
                             </a>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Soluciones Section -->
-    <section class="soluciones-section">
-        <div class="container">
-            <h2 class="soluciones-title">Soluciones</h2>
-            
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="assets/images/aplicaciones/industria1.jpg" alt="Bombas industriales">
-                </div>
-                <div class="gallery-item">
-                    <img src="assets/images/aplicaciones/industria2.jpg" alt="Sistemas de vapor">
-                </div>
-                <div class="gallery-item">
-                    <img src="assets/images/aplicaciones/industria3.jpg" alt="Compresores">
-                </div>
-                <div class="gallery-item">
-                    <img src="assets/images/aplicaciones/industria4.jpg" alt="Equipamiento industrial">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Marcas Section -->
-    <section class="marcas-section">
-        <div class="container">
-            <h2 class="marcas-title">Marcas</h2>
-            
-            <div class="marcas-grid">
-                <div class="marca-logo">
-                    <img src="assets/images/logos/emax.png" alt="EMAX">
-                </div>
-                <div class="marca-logo">
-                    <img src="assets/images/logos/spiraxsarco.png" alt="Spirax Sarco">
-                </div>
-                <div class="marca-logo">
-                    <img src="assets/images/logos/grundfos.jpg" alt="Grundfos">
-                </div>
-                <div class="marca-logo">
-                    <img src="assets/images/logos/genebre.png" alt="Genebre">
-                </div>
-                <div class="marca-logo">
-                    <img src="assets/images/logos/sullair.jpg" alt="Sullair">
-                </div>
-                <div class="marca-logo">
-                    <img src="assets/images/logos/dunlop.jpg" alt="Dunlop">
-                </div>
-                <div class="marca-logo">
-                    <img src="assets/images/logos/klinger.jpg" alt="Klinger">
-                </div>
-                <div class="marca-logo">
-                    <img src="assets/images/logos/rexnord.jpg" alt="Rexnord">
-                </div>
-                <div class="marca-logo">
-                    <img src="assets/images/logos/danfoss.jpg" alt="Danfoss">
-                </div>
-                <div class="marca-logo">
-                    <img src="assets/images/logos/metalplan.jpg" alt="Metalplan">
                 </div>
             </div>
         </div>
