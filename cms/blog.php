@@ -252,6 +252,7 @@ $stats = $blogModel->getStats();
         </div>
         <form method="POST" action="" enctype="multipart/form-data">
             <input type="hidden" name="action" value="update">
+            <input type="hidden" name="csrf_token" value="<?php echo Security::generateCSRFToken(); ?>">
             <input type="hidden" id="edit_post_id" name="post_id">
             <input type="hidden" id="edit_featured_image" name="featured_image">
             <div class="modal-body">
@@ -303,8 +304,8 @@ $stats = $blogModel->getStats();
 </form>
 
 <!-- Quill Editor (Self-hosted) -->
-<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
-<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+<link href="<?php echo CMS_URL; ?>/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+<script src="<?php echo CMS_URL; ?>/assets/vendor/quill/quill.min.js"></script>
 
 <style>
 .ql-editor {
