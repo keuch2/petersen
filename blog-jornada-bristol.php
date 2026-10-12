@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<?php include 'includes/analytics.php'; ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Jornada de Capacitación Bristol - Petersen fortalece alianzas con capacitaciones en múltiples sucursales.">

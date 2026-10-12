@@ -7,6 +7,7 @@ Security::setSecurityHeaders();
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<?php include 'includes/analytics.php'; ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Bases y condiciones de la promoción Paraguay Tu Papá de Petersen. Vigencia del 12 de junio al 18 de julio de 2026.">

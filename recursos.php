@@ -14,6 +14,7 @@ $catalogs = $catalogModel->getActive();
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<?php include 'includes/analytics.php'; ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Recursos y catálogos de Petersen - Descarga nuestros catálogos técnicos y materiales informativos.">

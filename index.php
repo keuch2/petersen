@@ -15,6 +15,7 @@ $recentPosts = array_slice($recentPosts, 0, 3); // Solo los 3 más recientes
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<?php include 'includes/analytics.php'; ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Petersen - Tu plataforma de soluciones inteligentes. Herramientas profesionales y soluciones industriales desde 1930.">

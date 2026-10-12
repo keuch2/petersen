@@ -179,13 +179,3 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=411601710262231&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-MXFGHT83T8"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-MXFGHT83T8');
-</script>
