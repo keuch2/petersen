@@ -41,6 +41,7 @@ config.local.php
 .env
 .env.local
 .env.production.local
+.env.deploy
 
 # Certificados SSL (ya están en el servidor)
 *.crt
@@ -49,6 +50,7 @@ config.local.php
 *.p7b
 *.pfx
 www_petersen_com_py18-06-2025/
+nuevo_ssl/
 
 # Archivos de caché PHP
 *.cache.php

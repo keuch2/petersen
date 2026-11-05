@@ -10,7 +10,15 @@ SERVER="root@181.40.91.194"
 PORT="2250"
 REMOTE_DIR="/var/www/petersen/public"
 LOCAL_DIR="/opt/homebrew/var/www/petersen"
-export SSHPASS='2026.WEBPetersen'
+# Credenciales: SSHPASS se toma del entorno o de .env.deploy (no versionado)
+if [ -z "$SSHPASS" ] && [ -f "$(dirname "$0")/.env.deploy" ]; then
+    source "$(dirname "$0")/.env.deploy"
+fi
+if [ -z "$SSHPASS" ]; then
+    echo "❌ Falta SSHPASS: definilo en .env.deploy o como variable de entorno"
+    exit 1
+fi
+export SSHPASS
 
 # Opciones SSH reutilizables
 SSH_OPTS="-o StrictHostKeyChecking=no -p ${PORT}"
@@ -63,6 +71,8 @@ rsync -avz --delete \
     --exclude='DEPLOYMENT.md' \
     --exclude='mockups/' \
     --exclude='www_petersen_com_py18-06-2025/' \
+    --exclude='nuevo_ssl/' \
+    --exclude='.env.deploy' \
     -e "sshpass -e ssh ${SSH_OPTS}" \
     ${LOCAL_DIR}/ ${SERVER}:${REMOTE_DIR}/ || { echo -e "${RED}❌ Error en rsync${NC}"; exit 1; }
 
