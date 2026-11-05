@@ -29,53 +29,6 @@ Security::setSecurityHeaders();
         </div>
     </div>
 
-    <!-- Map Section -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <section class="sucursales-map" style="margin-top: 0; border-radius: 0;">
-        <div id="sucursalesMap" style="width: 100%; height: 450px;"></div>
-    </section>
-    
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const sucursales = [
-            { name: "Casa Central", lat: -25.2867, lng: -57.6470, url: "https://maps.app.goo.gl/dP77fbZNrobLW9mL7" },
-            { name: "Ciudad del Este", lat: -25.5097, lng: -54.6111, url: "https://maps.app.goo.gl/WgA5gcxoznocdwRo9" },
-            { name: "Eusebio Ayala", lat: -25.2989, lng: -57.5856, url: "https://maps.app.goo.gl/UE1BNfNGgsv7o8tU9" },
-            { name: "San Lorenzo", lat: -25.3389, lng: -57.5094, url: "https://maps.app.goo.gl/NZpY3F7pQ4NqVpFa9" },
-            { name: "Mariano Roque Alonso", lat: -25.2019, lng: -57.5347, url: "https://maps.app.goo.gl/KLoYwSQk1uQwiETE8" },
-            { name: "Acceso Sur", lat: -25.3564, lng: -57.5533, url: "https://maps.app.goo.gl/5RQ3FcTWawFaqrMj6" }
-        ];
-        
-        const map = L.map('sucursalesMap').setView([-25.3, -56.5], 7);
-        
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
-        
-        const bounds = [];
-        
-        const blueIcon = L.icon({
-            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-            popupAnchor: [1, -34],
-            shadowSize: [41, 41]
-        });
-        
-        sucursales.forEach(sucursal => {
-            const marker = L.marker([sucursal.lat, sucursal.lng], { icon: blueIcon }).addTo(map);
-            marker.bindPopup(`<strong>${sucursal.name}</strong><br><a href="${sucursal.url}" target="_blank" style="color: #EE7124;">Ver en Google Maps</a>`);
-            bounds.push([sucursal.lat, sucursal.lng]);
-        });
-        
-        if (bounds.length > 0) {
-            map.fitBounds(bounds, { padding: [30, 30] });
-        }
-    });
-    </script>
-
     <!-- Sucursales List -->
     <section style="padding: 60px 0;">
         <div class="container">
@@ -223,6 +176,53 @@ Security::setSecurityHeaders();
             </div>
         </div>
     </section>
+
+    <!-- Map Section -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <section class="sucursales-map" style="margin-top: 0; border-radius: 0;">
+        <div id="sucursalesMap" style="width: 100%; height: 450px;"></div>
+    </section>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const sucursales = [
+            { name: "Casa Central", lat: -25.2867, lng: -57.6470, url: "https://maps.app.goo.gl/dP77fbZNrobLW9mL7" },
+            { name: "Ciudad del Este", lat: -25.5097, lng: -54.6111, url: "https://maps.app.goo.gl/WgA5gcxoznocdwRo9" },
+            { name: "Eusebio Ayala", lat: -25.2989, lng: -57.5856, url: "https://maps.app.goo.gl/UE1BNfNGgsv7o8tU9" },
+            { name: "San Lorenzo", lat: -25.3389, lng: -57.5094, url: "https://maps.app.goo.gl/NZpY3F7pQ4NqVpFa9" },
+            { name: "Mariano Roque Alonso", lat: -25.2019, lng: -57.5347, url: "https://maps.app.goo.gl/KLoYwSQk1uQwiETE8" },
+            { name: "Acceso Sur", lat: -25.3564, lng: -57.5533, url: "https://maps.app.goo.gl/5RQ3FcTWawFaqrMj6" }
+        ];
+        
+        const map = L.map('sucursalesMap').setView([-25.3, -56.5], 7);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        const bounds = [];
+        
+        const blueIcon = L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+        
+        sucursales.forEach(sucursal => {
+            const marker = L.marker([sucursal.lat, sucursal.lng], { icon: blueIcon }).addTo(map);
+            marker.bindPopup(`<strong>${sucursal.name}</strong><br><a href="${sucursal.url}" target="_blank" style="color: #EE7124;">Ver en Google Maps</a>`);
+            bounds.push([sucursal.lat, sucursal.lng]);
+        });
+        
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [30, 30] });
+        }
+    });
+    </script>
 <?php include 'includes/footer.php'; ?>
 
 <script src="assets/js/main.js"></script>
