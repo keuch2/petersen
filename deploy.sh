@@ -6,9 +6,12 @@
 echo "🚀 Iniciando despliegue a producción..."
 
 # Configuración
-SERVER="root@181.40.91.194"
+SERVER="soporte@181.40.91.194"
 PORT="2250"
 REMOTE_DIR="/var/www/petersen/public"
+# soporte no puede escribir en REMOTE_DIR (es de www-data): rsync sube a esta
+# carpeta de su home y luego se copia a REMOTE_DIR con sudo
+STAGING_DIR="petersen-deploy"
 LOCAL_DIR="/opt/homebrew/var/www/petersen"
 # Credenciales: SSHPASS se toma del entorno o de .env.deploy (no versionado)
 if [ -z "$SSHPASS" ] && [ -f "$(dirname "$0")/.env.deploy" ]; then
@@ -22,6 +25,37 @@ export SSHPASS
 
 # Opciones SSH reutilizables
 SSH_OPTS="-o StrictHostKeyChecking=no -p ${PORT}"
+
+# Exclusiones compartidas por ambos rsync (local → staging y staging → REMOTE_DIR).
+# En el segundo, además protegen de --delete lo que solo existe en el servidor.
+RSYNC_EXCLUDES=(
+    --exclude='.git/'
+    --exclude='node_modules'
+    --exclude='.DS_Store'
+    --exclude='*.log'
+    --exclude='logs/'
+    --exclude='cms/database/'
+    --exclude='deploy.sh'
+    --exclude='DEPLOYMENT.md'
+    --exclude='mockups/'
+    --exclude='www_petersen_com_py18-06-2025/'
+    --exclude='nuevo_ssl/'
+    --exclude='.env.deploy'
+    # Archivos subidos por usuarios/CMS que solo existen en el servidor:
+    # se suben los del repo, pero --delete nunca borra los del servidor
+    --filter='P /uploads/**'
+    --filter='P /assets/media/**'
+    --filter='P /assets/images/blog/**'
+    --filter='P /assets/images/feria/**'
+    --filter='P /assets/catalogs/**'
+)
+
+# Ejecuta un script bash en el servidor como root vía sudo. La contraseña de
+# sudo viaja por stdin (sudo -S lee solo la primera línea), nunca en la línea
+# de comandos.
+remote_sudo() {
+    { printf '%s\n' "$SSHPASS"; cat; } | sshpass -e ssh ${SSH_OPTS} ${SERVER} "sudo -S -p '' bash -s"
+}
 
 # Colores para output
 GREEN='\033[0;32m'
@@ -46,48 +80,40 @@ fi
 echo -e "${YELLOW}📤 Subiendo cambios a GitHub...${NC}"
 git push origin main || { echo -e "${RED}❌ Error al subir a GitHub${NC}"; exit 1; }
 
-# Paso 1: Backup + configurar Git en el servidor (una sola conexión SSH)
+# Paso 1: Backup + configurar Git en el servidor
 echo -e "${YELLOW}💾 Creando backup y configurando Git en el servidor...${NC}"
-sshpass -e ssh ${SSH_OPTS} ${SERVER} "
-    cd ${REMOTE_DIR} && \
-    tar -czf ../backup-\$(date +%Y%m%d-%H%M%S).tar.gz . 2>/dev/null; \
-    if [ ! -d .git ]; then \
-        git init && \
-        git config user.email 'deploy@petersen.com.py' && \
-        git config user.name 'Petersen Deploy' && \
-        git branch -m main; \
-    fi
-" || echo -e "${YELLOW}⚠️  Backup/Git config: continuando...${NC}"
+remote_sudo <<EOF || echo -e "${YELLOW}⚠️  Backup/Git config: continuando...${NC}"
+cd ${REMOTE_DIR} || exit 1
+tar -czf ../backup-\$(date +%Y%m%d-%H%M%S).tar.gz . 2>/dev/null
+if [ ! -d .git ]; then
+    git init && \
+    git config user.email 'deploy@petersen.com.py' && \
+    git config user.name 'Petersen Deploy' && \
+    git branch -m main
+fi
+EOF
 
-# Paso 2: Sincronizar archivos con rsync
+# Paso 2: Subir archivos a la carpeta de staging del usuario
 echo -e "${YELLOW}📦 Sincronizando archivos con el servidor...${NC}"
-rsync -avz --delete \
-    --exclude='node_modules' \
-    --exclude='.DS_Store' \
-    --exclude='*.log' \
-    --exclude='logs/' \
-    --exclude='cms/database/' \
-    --exclude='deploy.sh' \
-    --exclude='DEPLOYMENT.md' \
-    --exclude='mockups/' \
-    --exclude='www_petersen_com_py18-06-2025/' \
-    --exclude='nuevo_ssl/' \
-    --exclude='.env.deploy' \
+rsync -avz --delete "${RSYNC_EXCLUDES[@]}" \
     -e "sshpass -e ssh ${SSH_OPTS}" \
-    ${LOCAL_DIR}/ ${SERVER}:${REMOTE_DIR}/ || { echo -e "${RED}❌ Error en rsync${NC}"; exit 1; }
+    ${LOCAL_DIR}/ ${SERVER}:${STAGING_DIR}/ || { echo -e "${RED}❌ Error en rsync${NC}"; exit 1; }
 
-# Paso 3: Commit en servidor + permisos + verificación (una sola conexión SSH)
+# Paso 3: Copiar staging → sitio, commit en servidor y permisos (con sudo)
 echo -e "${YELLOW}📝 Finalizando despliegue en el servidor...${NC}"
-COMMIT_MSG="Deploy: $(git log -1 --pretty=format:'%h - %s')"
-sshpass -e ssh ${SSH_OPTS} ${SERVER} "
-    cd ${REMOTE_DIR} && \
-    git add -A && \
-    (git diff-index --quiet HEAD 2>/dev/null || git commit -m '${COMMIT_MSG}') && \
-    chown -R www-data:www-data ${REMOTE_DIR} && \
-    chmod -R 755 ${REMOTE_DIR} && \
-    echo 'DEPLOY_OK'
-" && echo -e "${GREEN}✅ Servidor actualizado correctamente${NC}" \
-  || echo -e "${YELLOW}⚠️  Algunos pasos finales pueden no haberse completado${NC}"
+COMMIT_MSG="Deploy: $(git log -1 --pretty=format:'%h - %s' | tr -d "'")"
+EXCLUDES_STR=$(printf "%q " "${RSYNC_EXCLUDES[@]}")
+remote_sudo <<EOF && echo -e "${GREEN}✅ Servidor actualizado correctamente${NC}" \
+  || { echo -e "${RED}❌ Error al finalizar el despliegue en el servidor${NC}"; exit 1; }
+set -e
+rsync -a --delete ${EXCLUDES_STR} ~soporte/${STAGING_DIR}/ ${REMOTE_DIR}/
+cd ${REMOTE_DIR}
+git add -A
+git diff-index --quiet HEAD 2>/dev/null || git commit -q -m '${COMMIT_MSG}'
+chown -R www-data:www-data ${REMOTE_DIR}
+chmod -R 755 ${REMOTE_DIR}
+echo 'DEPLOY_OK'
+EOF
 
 echo ""
 echo "📊 Resumen del despliegue:"

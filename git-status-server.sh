@@ -4,7 +4,7 @@
 # Uso: ./git-status-server.sh
 
 # Configuración
-SERVER="root@181.40.91.194"
+SERVER="soporte@181.40.91.194"
 PORT="2250"
 REMOTE_DIR="/var/www/petersen/public"
 # Credenciales: SSHPASS se toma del entorno o de .env.deploy (no versionado)
@@ -40,27 +40,27 @@ echo ""
 
 # Mostrar rama actual
 echo -e "${YELLOW}🌿 Rama actual:${NC}"
-$SSH_CMD "cd $REMOTE_DIR && git branch --show-current 2>/dev/null || echo 'N/A'"
+$SSH_CMD "cd $REMOTE_DIR && git -c safe.directory=$REMOTE_DIR branch --show-current 2>/dev/null || echo 'N/A'"
 
 echo ""
 
 # Mostrar último commit
 echo -e "${YELLOW}📝 Último commit:${NC}"
-$SSH_CMD "cd $REMOTE_DIR && git log -1 --oneline 2>/dev/null || echo 'Sin commits'"
+$SSH_CMD "cd $REMOTE_DIR && git -c safe.directory=$REMOTE_DIR log -1 --oneline 2>/dev/null || echo 'Sin commits'"
 
 echo ""
 
 # Mostrar estado
 echo -e "${YELLOW}📊 Estado del repositorio:${NC}"
-$SSH_CMD "cd $REMOTE_DIR && git status -s 2>/dev/null || echo 'Git no disponible'"
+$SSH_CMD "cd $REMOTE_DIR && git -c safe.directory=$REMOTE_DIR status -s 2>/dev/null || echo 'Git no disponible'"
 
 echo ""
 
 # Mostrar configuración
 echo -e "${YELLOW}⚙️  Configuración Git:${NC}"
 $SSH_CMD "cd $REMOTE_DIR && \
-    echo 'Usuario: '$(git config user.name 2>/dev/null || echo 'No configurado') && \
-    echo 'Email: '$(git config user.email 2>/dev/null || echo 'No configurado')"
+    echo 'Usuario: '\$(git -c safe.directory=$REMOTE_DIR config user.name 2>/dev/null || echo 'No configurado') && \
+    echo 'Email: '\$(git -c safe.directory=$REMOTE_DIR config user.email 2>/dev/null || echo 'No configurado')"
 
 echo ""
 echo -e "${GREEN}✅ Verificación completada${NC}"
