@@ -24,7 +24,7 @@ fi
 export SSHPASS
 
 # Opciones SSH reutilizables
-SSH_OPTS="-o StrictHostKeyChecking=no -p ${PORT}"
+SSH_OPTS="-o StrictHostKeyChecking=no -o PubkeyAuthentication=no -p ${PORT}"
 
 # Exclusiones compartidas por ambos rsync (local → staging y staging → REMOTE_DIR).
 # En el segundo, además protegen de --delete lo que solo existe en el servidor.

@@ -16,7 +16,7 @@ if [ -z "$SSHPASS" ]; then
     exit 1
 fi
 export SSHPASS
-SSH_CMD="sshpass -e ssh -o StrictHostKeyChecking=no -p $PORT $SERVER"
+SSH_CMD="sshpass -e ssh -o StrictHostKeyChecking=no -o PubkeyAuthentication=no -p $PORT $SERVER"
 
 # Colores
 GREEN='\033[0;32m'
